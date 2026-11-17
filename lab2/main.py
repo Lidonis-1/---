@@ -20,9 +20,10 @@ class main_window:
 
         # Словник з посиланням на класи фігур для створення екземплярів
         self.shape_classes = {
+            'Крапка': shapes.Point,
             'Лінія': shapes.Line,
             'Прямокутник': shapes.Rectangle,
-            'Еліпс': shapes.Ellipse
+            'Еліпс': shapes.Ellipse   
         }
 
         # зміна вибору поточного класу
@@ -77,7 +78,7 @@ class main_window:
     def on_release(self, event):
         if self.current_shape_obj:
             # Зберігаємо об'єкт у статичний масив-історію (якщо є вільне місце)
-            if self.shape_count < self.N:
+            if self.shape_count <= self.N:
                 self.pcshape[self.shape_count] = self.current_shape_obj
                 self.shape_count += 1
                 print(f"Фігуру збережено в масив. Загалом об'єктів: {self.shape_count}")

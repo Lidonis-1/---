@@ -4,25 +4,27 @@ import shapes
 class MainWindow:
     def __init__(self, root):
         self.root = root
-        self.root.title("lab3")
         self.root.geometry("800x600")
-
-        # 1. СПОЧАТКУ створюємо StringVar, оскільки кнопки до нього звертаються!
-        self.selected_object = tk.StringVar(value="Прямокутник")
 
         # Словник з посиланнями на класи фігур
         self.shape_classes = {
+            'Крапка': shapes.Point,
             'Лінія': shapes.Line,
             'Прямокутник': shapes.Rectangle,
             'Еліпс': shapes.Ellipse
         }
         
-        # Поточний вибраний клас
-        self.current_class = self.shape_classes["Прямокутник"]
+        # Поточний вибраний клас та назва (без StringVar)
+        self.current_shape_name = "Прямокутник"
+        self.current_class = self.shape_classes[self.current_shape_name]
+        self.root.title(f"lab3 - {self.current_shape_name}")
 
         # 2. Меню інструментів (toolbar) та кнопки
         toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED, bg="#e0e0e0")
         toolbar.pack(side=tk.TOP, fill=tk.X)
+
+        btn_point = tk.Button(toolbar, text=" · ", font=("Arial", 12), command=lambda: self.set_tool("Крапка"))
+        btn_point.pack(side=tk.LEFT, padx=2, pady=2)
 
         btn_line = tk.Button(toolbar, text=" — ", font=("Arial", 12), command=lambda: self.set_tool("Лінія"))
         btn_line.pack(side=tk.LEFT, padx=2, pady=2)
@@ -38,8 +40,8 @@ class MainWindow:
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.current_shape_obj = None
-        self.N = 108
-        self.pcshape = [None] * self.N
+        self.N = 109
+        self.pcshape = [] 
         self.shape_count = 0
 
         # Події миші
@@ -52,27 +54,22 @@ class MainWindow:
         menubar.add_command(label='Файл', command=lambda: print("Файл was opened"))
 
         objects_menu = tk.Menu(menubar, tearoff=0)
+        # Використовуємо add_command замість add_radiobutton, щоб прибрати позначки
         for name in self.shape_classes.keys():
-            objects_menu.add_radiobutton(
+            objects_menu.add_command(
                 label=name, 
-                variable=self.selected_object, 
-                value=name,
-                command=self.change_tool_class
+                command=lambda n=name: self.set_tool(n)
             )
 
         menubar.add_cascade(label="Об'єкти", menu=objects_menu)
         menubar.add_command(label='Довідка', command=lambda: print("Довідка was opened"))
         self.root.config(menu=menubar)
 
-    # МЕТОДИ КЛАСУ ПОВИННІ БУТИ НА РІВНІ __init__, а не всередині нього!
     def set_tool(self, shape_name):
-        """Встановлює значення StringVar та оновлює активний клас"""
-        self.selected_object.set(shape_name)
-        self.change_tool_class()
-
-    def change_tool_class(self):
-        shape_name = self.selected_object.get()
+        """Встановлює активний клас фігури та оновлює заголовок вікна"""
+        self.current_shape_name = shape_name
         self.current_class = self.shape_classes[shape_name]
+        self.root.title(f"lab3 - {shape_name}")
         print(f"Змінено активний клас на: {shape_name} ({self.current_class.__name__})")
 
     def on_button_press(self, event):
@@ -88,8 +85,8 @@ class MainWindow:
 
     def on_release(self, event):
         if self.current_shape_obj:
-            if self.shape_count < self.N:
-                self.pcshape[self.shape_count] = self.current_shape_obj
+            if self.shape_count <= self.N:
+                self.pcshape.append(self.current_shape_obj)
                 self.shape_count += 1
                 print(f"Фігуру збережено в масив. Загалом об'єктів: {self.shape_count}")
             self.current_shape_obj = None

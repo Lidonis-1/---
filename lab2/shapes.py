@@ -16,6 +16,15 @@ class Shape:
     def stop_drawing(self, event):
         pass
 
+class Point(Shape):
+    def start_drawing(self, event):
+        super().start_drawing(event)
+        r = 2  # радіус крапки (діаметр буде 4 пікселі)
+        self.shape_id = self.canvas.create_oval(
+            self.start_x - r, self.start_y - r,
+            self.start_x + r, self.start_y + r,
+            fill='black', outline='black'
+        )
 
 class Line(Shape):
     """Клас лінії (простіший базовий графічний елемент)"""
@@ -54,7 +63,7 @@ class Ellipse(Shape):
         # За варіантом: ввід від центру, чорний контур із блакитним заповненням
         self.shape_id = self.canvas.create_oval(
             self.start_x, self.start_y, self.start_x, self.start_y,
-            outline='black', width=2, fill='lightblue'
+            outline='black', width=2, fill='lightgreen'
         )
 
     def draw(self, event):
