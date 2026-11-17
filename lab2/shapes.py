@@ -1,5 +1,4 @@
 class Shape:
-    """Базовий абстрактний клас для всіх фігур"""
     def __init__(self, canvas):
         self.canvas = canvas
         self.shape_id = None
@@ -63,7 +62,7 @@ class Ellipse(Shape):
         # За варіантом: ввід від центру, чорний контур із блакитним заповненням
         self.shape_id = self.canvas.create_oval(
             self.start_x, self.start_y, self.start_x, self.start_y,
-            outline='black', width=2, fill='lightgreen'
+            outline='black', width=2, fill='lightblue'
         )
 
     def draw(self, event):

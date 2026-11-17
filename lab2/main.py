@@ -10,15 +10,12 @@ class main_window:
         self.canvas = tk.Canvas(self.root, width=800, height=600, bg='white')
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
-        # поточний клас
         self.current_shape_obj = None
 
-        # Статичний масив вказівників (історія) N = Ж + 100 = 8 + 100 = 108
         self.N = 108
         self.pcshape = [None] * self.N
         self.shape_count = 0
 
-        # Словник з посиланням на класи фігур для створення екземплярів
         self.shape_classes = {
             'Крапка': shapes.Point,
             'Лінія': shapes.Line,
@@ -26,13 +23,10 @@ class main_window:
             'Еліпс': shapes.Ellipse   
         }
 
-        # зміна вибору поточного класу
         self.selected_object = tk.StringVar(value="Прямокутник")
         
-        # Поточний вибраний клас (за замовчуванням Rectangle)
         self.current_class = self.shape_classes["Прямокутник"]
 
-        # Прив'язуємо події миші до холста
         self.canvas.bind("<Button-1>", self.on_button_press)
         self.canvas.bind("<B1-Motion>", self.on_holding)
         self.canvas.bind("<ButtonRelease-1>", self.on_release)
@@ -57,9 +51,7 @@ class main_window:
         self.root.config(menu=menubar)
 
     def change_tool_class(self):
-        """Змінює активний клас-інструмент на основі вибору в меню StringVar"""
         shape_name = self.selected_object.get()
-        # Отримуємо посилання на клас зі словника та записуємо у змінну
         self.current_class = self.shape_classes[shape_name]
         print(f"Змінено активний клас на: {shape_name} ({self.current_class.__name__})")
 
@@ -67,7 +59,6 @@ class main_window:
         if self.shape_count >= 108:
             print("забагато об'єктів")
             return
-        # Створюємо екземпляр поточного вибраного класу за допомогою посилання на нього
         self.current_shape_obj = self.current_class(self.canvas)
         self.current_shape_obj.start_drawing(event)
 

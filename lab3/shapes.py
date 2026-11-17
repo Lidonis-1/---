@@ -1,17 +1,5 @@
-"""
-типи об'єктів : 
-крапка чорна
-червона лінія
-прямокутник з центру до кутів чорний без заповнення
-еліпс по двом протилежним кутам прямокутника блакитне заповнення
-тип виводиться в заголовок вікна
-
-""" 
-
-
 
 class Shape:
-    """Базовий абстрактний клас для всіх фігур"""
     def __init__(self, canvas):
         self.canvas = canvas
         self.shape_id = None
@@ -40,7 +28,6 @@ class Point(Shape):
 
 
 class Line(Shape):
-    """Клас лінії (простіший базовий графічний елемент)"""
     def start_drawing(self, event):
         super().start_drawing(event)
         # За варіантом: суцільна лінія чорного кольору
@@ -55,7 +42,6 @@ class Line(Shape):
 
 
 class Rectangle(Shape):
-    """Прямокутник (наслідує загальні властивості Shape)"""
     def start_drawing(self, event):
         super().start_drawing(event)
         self.shape_id = self.canvas.create_rectangle(
@@ -76,7 +62,6 @@ class Rectangle(Shape):
 
 
 class Ellipse(Shape):
-    """Еліпс (наслідує Shape, реалізує ввід від центру)"""
     def start_drawing(self, event):
         super().start_drawing(event)
         # За варіантом: ввід від центру, чорний контур із блакитним заповненням

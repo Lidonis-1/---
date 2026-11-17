@@ -1,12 +1,12 @@
 import tkinter as tk
 import shapes
+import button_images
 
 class MainWindow:
     def __init__(self, root):
         self.root = root
         self.root.geometry("800x600")
 
-        # Словник з посиланнями на класи фігур
         self.shape_classes = {
             'Крапка': shapes.Point,
             'Лінія': shapes.Line,
@@ -14,28 +14,28 @@ class MainWindow:
             'Еліпс': shapes.Ellipse
         }
         
-        # Поточний вибраний клас та назва (без StringVar)
         self.current_shape_name = "Прямокутник"
         self.current_class = self.shape_classes[self.current_shape_name]
         self.root.title(f"lab3 - {self.current_shape_name}")
+
+        self.icons = button_images.create_icons()
 
         # 2. Меню інструментів (toolbar) та кнопки
         toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED, bg="#e0e0e0")
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        btn_point = tk.Button(toolbar, text=" · ", font=("Arial", 12), command=lambda: self.set_tool("Крапка"))
+        btn_point = tk.Button(toolbar, image=self.icons["Крапка"], font=("Arial", 12), command=lambda: self.set_tool("Крапка"))
         btn_point.pack(side=tk.LEFT, padx=2, pady=2)
 
-        btn_line = tk.Button(toolbar, text=" — ", font=("Arial", 12), command=lambda: self.set_tool("Лінія"))
+        btn_line = tk.Button(toolbar, image=self.icons["Лінія"], font=("Arial", 12), command=lambda: self.set_tool("Лінія"))
         btn_line.pack(side=tk.LEFT, padx=2, pady=2)
 
-        btn_rect = tk.Button(toolbar, text=" ▭ ", font=("Arial", 12), command=lambda: self.set_tool("Прямокутник"))
+        btn_rect = tk.Button(toolbar, image=self.icons["Прямокутник"], font=("Arial", 12), command=lambda: self.set_tool("Прямокутник"))
         btn_rect.pack(side=tk.LEFT, padx=2, pady=2)
 
-        btn_circle = tk.Button(toolbar, text=" ○ ", font=("Arial", 12), command=lambda: self.set_tool("Еліпс"))
+        btn_circle = tk.Button(toolbar, image=self.icons["Еліпс"], font=("Arial", 12), command=lambda: self.set_tool("Еліпс"))
         btn_circle.pack(side=tk.LEFT, padx=2, pady=2)
 
-        # 3. Canvas та інші елементи
         self.canvas = tk.Canvas(self.root, width=800, height=600, bg='white')
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
@@ -66,7 +66,6 @@ class MainWindow:
         self.root.config(menu=menubar)
 
     def set_tool(self, shape_name):
-        """Встановлює активний клас фігури та оновлює заголовок вікна"""
         self.current_shape_name = shape_name
         self.current_class = self.shape_classes[shape_name]
         self.root.title(f"lab3 - {shape_name}")
