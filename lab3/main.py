@@ -7,6 +7,7 @@ class MainWindow:
         self.root = root
         self.root.geometry("800x600")
 
+        # Словник з посиланнями на класи фігур
         self.shape_classes = {
             'Крапка': shapes.Point,
             'Лінія': shapes.Line,
@@ -16,25 +17,23 @@ class MainWindow:
         
         self.current_shape_name = "Прямокутник"
         self.current_class = self.shape_classes[self.current_shape_name]
-        self.root.title(f"lab3 - {self.current_shape_name}")
 
+        # Завантажуємо іконки
         self.icons = button_images.create_icons()
 
-        # 2. Меню інструментів (toolbar) та кнопки
+        # 1. Панель інструментів (toolbar)
         toolbar = tk.Frame(self.root, bd=1, relief=tk.RAISED, bg="#e0e0e0")
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        btn_point = tk.Button(toolbar, image=self.icons["Крапка"], font=("Arial", 12), command=lambda: self.set_tool("Крапка"))
-        btn_point.pack(side=tk.LEFT, padx=2, pady=2)
-
-        btn_line = tk.Button(toolbar, image=self.icons["Лінія"], font=("Arial", 12), command=lambda: self.set_tool("Лінія"))
-        btn_line.pack(side=tk.LEFT, padx=2, pady=2)
-
-        btn_rect = tk.Button(toolbar, image=self.icons["Прямокутник"], font=("Arial", 12), command=lambda: self.set_tool("Прямокутник"))
-        btn_rect.pack(side=tk.LEFT, padx=2, pady=2)
-
-        btn_circle = tk.Button(toolbar, image=self.icons["Еліпс"], font=("Arial", 12), command=lambda: self.set_tool("Еліпс"))
-        btn_circle.pack(side=tk.LEFT, padx=2, pady=2)
+        self.toolbar_buttons = {}
+        for name in self.shape_classes.keys():
+            btn = tk.Button(
+                toolbar, 
+                image=self.icons[name], 
+                command=lambda n=name: self.set_tool(n)
+            )
+            btn.pack(side=tk.LEFT, padx=2, pady=2)
+            self.toolbar_buttons[name] = btn
 
         self.canvas = tk.Canvas(self.root, width=800, height=600, bg='white')
         self.canvas.pack(fill=tk.BOTH, expand=True)
@@ -49,12 +48,11 @@ class MainWindow:
         self.canvas.bind("<B1-Motion>", self.on_holding)
         self.canvas.bind("<ButtonRelease-1>", self.on_release)
 
-        # Меню зверху
+        # 3. Верхнє меню (menubar) без позначок активності
         menubar = tk.Menu(self.root)
         menubar.add_command(label='Файл', command=lambda: print("Файл was opened"))
 
         objects_menu = tk.Menu(menubar, tearoff=0)
-        # Використовуємо add_command замість add_radiobutton, щоб прибрати позначки
         for name in self.shape_classes.keys():
             objects_menu.add_command(
                 label=name, 
@@ -65,11 +63,25 @@ class MainWindow:
         menubar.add_command(label='Довідка', command=lambda: print("Довідка was opened"))
         self.root.config(menu=menubar)
 
+        # Викликаємо onNotify при старті, щоб "втиснути" кнопку початкового інструменту
+        self.onNotify()
+
     def set_tool(self, shape_name):
         self.current_shape_name = shape_name
         self.current_class = self.shape_classes[shape_name]
-        self.root.title(f"lab3 - {shape_name}")
         print(f"Змінено активний клас на: {shape_name} ({self.current_class.__name__})")
+        self.onNotify()
+
+    def onNotify(self):
+        self.root.title(f"lab3 - {self.current_shape_name}")
+        
+        for name, btn in self.toolbar_buttons.items():
+            if name == self.current_shape_name:
+                # Активна кнопка виглядає натиснутою і трохи темнішою
+                btn.config(relief=tk.SUNKEN, bg="#c8c8c8")
+            else:
+                # Неактивні кнопки у звичайному стані
+                btn.config(relief=tk.RAISED, bg="#f0f0f0")
 
     def on_button_press(self, event):
         if self.shape_count >= 108:
