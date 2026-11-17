@@ -62,7 +62,7 @@ class Ellipse(Shape):
         # За варіантом: ввід від центру, чорний контур із блакитним заповненням
         self.shape_id = self.canvas.create_oval(
             self.start_x, self.start_y, self.start_x, self.start_y,
-            outline='black', width=2, fill='lightblue'
+            outline='black', width=2, fill='lightgreen'
         )
 
     def draw(self, event):
