@@ -61,7 +61,7 @@ class Rectangle(Shape):
             self.canvas.coords(self.shape_id, x1, y1, x2, y2)
 
 
-class Cube(Rectangle, Line, Shape):
+class Cube(Rectangle, Line):
     def __init__(self, canvas):
         super().__init__(canvas)
         self.rect_ids = []   # [front_id, back_id]
@@ -138,7 +138,7 @@ class Ellipse(Shape):
             self.canvas.coords(self.shape_id, self.start_x, self.start_y, event.x, event.y)
 
 
-class Line_elips(Line, Ellipse, Shape):
+class Line_elips(Line, Ellipse):
     def __init__(self, canvas):
         super().__init__(canvas)
         self.line_id = None
