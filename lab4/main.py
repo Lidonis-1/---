@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import HORIZONTAL, VERTICAL, Scale
 import button_images
 import shapes
 
@@ -41,31 +40,6 @@ class MyEditor:
             btn.pack(side=tk.LEFT, padx=2, pady=2)
             self.toolbar_buttons[name] = btn
 
-        self.scale_x = tk.Scale(
-            self.root,
-            from_=1,
-            to=100,
-            orient=tk.HORIZONTAL,
-            showvalue=False,
-            sliderlength=24,
-            width=14,
-            bd=0,
-            highlightthickness=0,
-        )
-        self.scale_x.pack(side=tk.BOTTOM, fill=tk.X, padx=0, pady=0)
-
-        self.scale_y = tk.Scale(
-            self.root,
-            from_=1,
-            to=100,
-            orient=tk.VERTICAL,
-            showvalue=False,
-            sliderlength=24,
-            width=14,
-            bd=0,
-            highlightthickness=0,
-        )
-        self.scale_y.pack(side=tk.RIGHT, fill=tk.Y, padx=0, pady=0)
 
         self.canvas = tk.Canvas(self.root, width=800, height=600, bg="white")
         self.canvas.pack(fill=tk.BOTH, expand=True)
