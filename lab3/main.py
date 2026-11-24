@@ -1,6 +1,7 @@
 import tkinter as tk
 import shapes
 import button_images
+from tkinter import Scale, HORIZONTAL
 
 class MainWindow:
     def __init__(self, root):
@@ -36,7 +37,7 @@ class MainWindow:
             self.toolbar_buttons[name] = btn
 
         self.canvas = tk.Canvas(self.root, width=800, height=600, bg='white')
-        self.canvas.pack(fill=tk.BOTH, expand=True)
+        
 
         self.current_shape_obj = None
         self.N = 109
@@ -62,6 +63,10 @@ class MainWindow:
         menubar.add_cascade(label="Об'єкти", menu=objects_menu)
         menubar.add_command(label='Довідка', command=lambda: print("Довідка was opened"))
         self.root.config(menu=menubar)
+
+
+        self.scale = Scale(self.root, from_=1, to=100, orient=HORIZONTAL)
+        self.scale.pack()
 
         # Викликаємо onNotify при старті, щоб "втиснути" кнопку початкового інструменту
         self.onNotify()
